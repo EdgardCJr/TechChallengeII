@@ -13,7 +13,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "jest",
-    "build": "pnpm install"
+    "build": "npm install"
   },
   "devDependencies": {
     "jest": "^29.7.0",
