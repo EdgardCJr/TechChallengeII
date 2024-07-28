@@ -1,34 +1,23 @@
-#Node.js
+# Use a imagem oficial do Node.js como base
 FROM node:18-alpine
 
-# Diretório de trabalho
-WORKDIR /usr/app
+# Defina o diretório de trabalho dentro do contêiner
+WORKDIR /app
 
-#package.json e o package-lock.json
+# Copie o package.json e o package-lock.json para o diretório de trabalho
 COPY package*.json ./
 
-# Instale as dependências 
+# Instale as dependências do projeto
 RUN npm install
 
-# Copie o restante do código
+# Copie o restante do código da aplicação para o diretório de trabalho
 COPY . .
-
-# variáveis de ambiente MONGO_URL
-ARG MONGO_URL
-ARG SESSION_SECRET
-
-ENV MONGO_URL=$MONGO_URL
-ENV SESSION_SECRET=$SESSION_SECRET
-
-RUN echo "MONGO_URL=$MONGO_URL" > .env
-RUN echo "SESSION_SECRET=ServerTeste1" > .env
-
-RUN npm i -g pnpm
-
-RUN pnpm build
 
 # Exponha a porta que a aplicação irá rodar
 EXPOSE 3000
 
-# Comando para rodar a aplicação
-CMD ["node", "server.js"]
+# Defina a variável de ambiente para o MongoDB
+ENV MONGODB_URI=mongodb://mongo:27017/techchallenge
+
+# Comando para iniciar a aplicação
+CMD ["npm", "start"]

@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const session = require('express-session');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const User = require('./models/User');
 const Post = require('./models/Post');
 const jwt = require('jsonwebtoken');
@@ -66,7 +67,7 @@ const authorizeTeacher = (req, res, next) => {
 app.post('/login', async (req, res) => {
   const { username, password, role } = req.body;
   try {
-    console.log('Recebido:', { username, password, role }); // Log para verificar os dados recebidos
+    console.log('Recebido:', { username, password, role });
 
     const user = await User.findOne({ username });
     if (!user) {

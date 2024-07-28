@@ -1,15 +1,22 @@
 version: '3.8'
+
 services:
-  db:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/techchallenge
+      - JWT_SECRET=ServerTeste2
+    depends_on:
+      - mongo
+
+  mongo:
     image: mongo:latest
-    container_name: PostagemFIAP
     ports:
       - "27017:27017"
     volumes:
-      - mongo_data:/data/db
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=Admin
-      - MONGO_INITDB_ROOT_PASSWORD=Adminpassword
+      - mongo-data:/data/db
 
 volumes:
-  mongo_data:
+  mongo-data:
