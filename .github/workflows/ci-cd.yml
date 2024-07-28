@@ -50,3 +50,42 @@ jobs:
       run: |
         echo "$SSH_PRIVATE_KEY" | ssh-add -
         ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull my-app && docker run -d -p 3000:3000 my-app"
+    
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test -- --coverage
+    
+    - name: Check coverage
+      run: |
+        COVERAGE=$(npx jest --coverage --coverageReporters=text-summary | grep 'All files' | awk '{print $4}' | sed 's/%//')
+        if [ "$COVERAGE" -lt 30 ]; then
+          echo "Insufficient test coverage: $COVERAGE%"
+          exit 1
+        fi
+    
+    - name: Build project
+      run: npm run build
+    
+    - name: Docker build
+      run: docker build -t my-app .
+    
+    - name: Docker login
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+    
+    - name: Docker push
+      run: docker push my-app
+    
+    - name: Deploy to server
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+      run: |
+        echo "$SSH_PRIVATE_KEY" | ssh-add -
+        ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull my-app && docker run -d -p 3000:3000 my-app"
+        

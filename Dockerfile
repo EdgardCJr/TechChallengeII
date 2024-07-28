@@ -21,7 +21,7 @@ ENV MONGO_URL=$MONGO_URL
 ENV SESSION_SECRET=$SESSION_SECRET
 
 RUN echo "MONGO_URL=$MONGO_URL" > .env
-RUN echo "SESSION_SECRET=ServerTeste1" >> .env
+RUN echo "SESSION_SECRET=ServerTeste1" > .env
 
 RUN npm i -g pnpm
 
