@@ -3,12 +3,14 @@
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-session": "^1.18.0",
     "method-override": "^3.0.0",
+    "mongoose": "^8.5.1",
     "node.js": "^0.0.1-security"
   },
   "scripts": {
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "pnpm build"
+    "build": "pnpm install"
   }
 }
