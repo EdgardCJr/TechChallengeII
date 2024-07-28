@@ -27,7 +27,7 @@ app.use(session({
   saveUninitialized: true,
 }));
 
-// Função para validar dados do formulário
+
 function validateFormData(req, res) {
   const { title, content, author } = req.body;
   if (!title || !content || !author) {
@@ -36,13 +36,13 @@ function validateFormData(req, res) {
   return true;
 }
 
-// Função para lidar com erros comuns
+
 function handleError(err, res) {
   console.error('Error:', err);
   res.status(500).send('Erro ao processar a requisição');
 }
 
-// Middleware de autenticação
+
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -51,12 +51,11 @@ const authenticateToken = (req, res, next) => {
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) return res.status(403).send('Forbidden');
-    req.user = user; // Attach user information to the request
+    req.user = user;
     next();
   });
 };
 
-// Middleware de autorização para professores
 const authorizeTeacher = (req, res, next) => {
   if (req.user.role !== 'professor') {
     return res.status(403).send('Forbidden: Somente professore podem acessar.');
@@ -86,12 +85,12 @@ app.post('/login', async (req, res) => {
 
     res.send({ token });
   } catch (err) {
-    console.error('Erro no servidor:', err); // Log do erro
+    console.error('Erro no servidor:', err); 
     res.status(500).send('Erro no servidor');
   }
 });
 
-// Endpoint para registrar um novo usuário
+
 app.post('/register', async (req, res) => {
   const { username, password, role } = req.body;
   try {
@@ -100,14 +99,14 @@ app.post('/register', async (req, res) => {
       return res.status(400).send('Username already exists.');
     }
 
-    // Crie o novo usuário
+
     const newUser = new User({
       username,
       password,
       role,
     });
 
-    // Hash the password before saving
+
     const hashedPassword = await bcrypt.hash(password, 10);
     newUser.password = hashedPassword;
 
@@ -119,7 +118,7 @@ app.post('/register', async (req, res) => {
   }
 });
 
-// Endpoints REST
+
 app.get('/posts',authenticateToken, async (req, res) => {
   try {
     const posts = await Post.find();
@@ -196,7 +195,6 @@ app.delete('/posts/:id',authenticateToken, async (req, res) => {
   }
 });
 
-// Iniciar o servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);

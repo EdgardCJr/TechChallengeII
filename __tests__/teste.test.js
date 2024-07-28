@@ -6,11 +6,9 @@ const Post = require('./models/Post');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// Mock environment variables
 process.env.MONGODB_URI = 'mongodb://localhost:27017/test-db';
 process.env.JWT_SECRET = 'test-secret';
 
-// Connect to the test database before each test
 beforeEach(async () => {
   await mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
@@ -18,7 +16,6 @@ beforeEach(async () => {
   });
 });
 
-// Disconnect from the test database after each test
 afterEach(async () => {
   await mongoose.connection.dropDatabase();
   await mongoose.disconnect();
