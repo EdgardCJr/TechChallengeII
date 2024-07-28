@@ -13,6 +13,9 @@ beforeAll(async () => {
   // Conexão com o banco de dados
   await mongoose.connect(process.env.MONGODB_URI);
 
+  // Limpa os usuários existentes para evitar duplicação
+  await User.deleteMany({});
+
   // Cria um usuário administrador
   const adminUser = new User({
     username: 'admin',
