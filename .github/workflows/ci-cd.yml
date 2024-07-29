@@ -20,5 +20,5 @@ jobs:
       - name: Build and Test Docker Image
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker build -t $DOCKER_USERNAME/tech-challenge --build-arf JWT_SECRET=${{secrets.JWT_SECRET}} .
+          docker build -t $DOCKER_USERNAME/tech-challenge --build-arg JWT_SECRET=${{secrets.JWT_SECRET}} .
           docker push $DOCKER_USERNAME/tech-challenge
