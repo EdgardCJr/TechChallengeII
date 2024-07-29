@@ -1,8 +1,8 @@
 const request = require('supertest');
-const app = require('./server');
+const app = require('../server');
 const mongoose = require('mongoose');
-const User = require('./models/User');
-const Post = require('./models/Post');
+const User = require('../models/User');
+const Post = require('../models/Post');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
