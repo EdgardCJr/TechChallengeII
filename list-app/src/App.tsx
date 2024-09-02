@@ -4,6 +4,7 @@ import Footer from './Components/Footer/Footer';
 import MainContent from './Components/MainContent/MainContent';
 import AddTask from './Pages/AddTask/AddTask';
 import TaskList from './Pages/TaskList/TaskList';
+import taskReducer from './Pages/reducers/taskReducer'; 
 import './App.css';
 
 interface Task {
