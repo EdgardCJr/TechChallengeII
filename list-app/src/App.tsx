@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 import Header from './Components/Header/Header';
 import Footer from './Components/Footer/Footer';
 import MainContent from './Components/MainContent/MainContent';
@@ -9,17 +9,24 @@ import './App.css';
 interface Task {
   id: number;
   name: string;
+  completed: boolean;
 }
 
+const initialState = { tasks: [] };
+
 function App() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [state, dispatch] = useReducer(taskReducer, initialState);
 
   const addTask = (taskName: string) => {
-    setTasks([...tasks, { id: tasks.length +1, name: taskName}]);
+    dispatch({ type: 'ADD_TASK', payload: taskName });
   };
 
   const removeTask = (taskId: number) => {
-    setTasks(tasks.filter(task => task.id !== taskId));
+    dispatch({ type: 'REMOVE_TASK', payload: taskId });
+  };
+
+  const toggleTask = (taskId: number) => {
+    dispatch({ type: 'TOGGLE_TASK', payload: taskId });
   };
 
   return (
@@ -28,7 +35,7 @@ function App() {
       <MainContent>
         <h1>Pendências</h1>
         <AddTask onAddTask={addTask} />
-        <TaskList tasks={tasks} onRemoveTask={removeTask} />
+        <TaskList tasks={state.tasks} onRemoveTask={removeTask} onToggleTask={toggleTask} />
       </MainContent>
       <Footer />
     </div>
